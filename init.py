@@ -1,3 +1,3 @@
-import store
+import bitbucket.store
 
-store.init()
+bitbucket.store.init()

@@ -4,7 +4,7 @@ import hashlib
 import json
 from datetime import datetime
 
-import store
+from bitbucket import store
 
 
 def pull_requests_to_review(repository):

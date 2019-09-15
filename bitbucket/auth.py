@@ -2,7 +2,7 @@ import requests
 import os
 from base64 import b64encode
 
-import store
+from bitbucket import store
 
 
 def prepare_token():
