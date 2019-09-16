@@ -1,23 +1,22 @@
 import os
-from datetime import datetime
 
 import bitbucket.auth
 import bitbucket.pull_requests
-import slack
+import slack.broadcast
+import slack.message
 
 bitbucket.auth.prepare_token()
 
-repos = os.getenv('BITBUCKET_REPOSITORIES').split(';')
-text = ''
-text += '%s\n' % datetime.now().strftime("%d.%m.%Y %H:%M")
+message_builder = slack.message.PullRequestMessageBuilder()
+message_builder.with_current_date()
 counter = 0
-for repo in repos:
-    text += '<%s|*%s*>\n' % ('https://bitbucket.org/%s/pull-requests/' % repo, repo)
-    prs = bitbucket.pull_requests.pull_requests_to_review(repo)
-    counter += len(prs)
-    for pr in prs:
-        text += ':white_small_square: <%s|%s>\n' % (pr['href'], pr['title'])
-    text += '\n'
+for repo in os.getenv('BITBUCKET_REPOSITORIES').split(';'):
+    message_builder.with_repository(repo, 'https://bitbucket.org/%s/pull-requests/' % repo)
+    pull_requests = bitbucket.pull_requests.pull_requests_to_review(repo)
+    counter += len(pull_requests)
+    for pull_request in pull_requests:
+        message_builder.with_pull_request(pull_request['title'], pull_request['href'])
+    message_builder.with_new_line()
 
 if counter > 0:
-    slack.message(text)
+    slack.broadcast.send(message_builder.build())

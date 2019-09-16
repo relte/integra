@@ -3,7 +3,7 @@ import os
 import json
 
 
-def message(text):
+def send(text):
     url = os.getenv('SLACK_WEBHOOK_URL')
 
     payload = {
