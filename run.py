@@ -5,11 +5,12 @@ import time
 
 import bitbucket.auth
 import bitbucket.pull_requests
+import bitbucket.store
 import slack.broadcast
 import slack.message
 
 
-def main():
+def check():
     bitbucket.auth.prepare_token()
 
     message_builder = slack.message.PullRequestMessageBuilder()
@@ -27,8 +28,19 @@ def main():
         slack.broadcast.send(message_builder.build())
 
 
-schedule.every(int(sys.argv[1])).seconds.do(main)
+def schedule_checks(interval):
+    schedule.every(int(interval)).seconds.do(check)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+
+try:
+    if sys.argv[1] == 'init':
+        bitbucket.store.init()
+    else:
+        check()
+        schedule_checks(sys.argv[1])
+except IndexError:
+    print('Argument must be provided')
