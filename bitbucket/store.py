@@ -1,5 +1,6 @@
 import json
 
+
 FILE = 'bitbucket/data.json'
 
 
@@ -16,9 +17,7 @@ def save_access_token(token):
 
 
 def get_access_token():
-    with open(FILE) as json_file:
-        data = json.load(json_file)
-        return data['access_token']
+    return __get('access_token')
 
 
 def save_account_id(account_id):
@@ -29,9 +28,7 @@ def save_account_id(account_id):
 
 
 def get_account_id():
-    with open(FILE) as json_file:
-        data = json.load(json_file)
-        return data['account_id']
+    return __get('account_id')
 
 
 def save_pull_request(pull_request_id, pull_request_hash):
@@ -42,9 +39,7 @@ def save_pull_request(pull_request_id, pull_request_hash):
 
 
 def get_pull_requests():
-    with open(FILE) as json_file:
-        data = json.load(json_file)
-        return data['pull_requests']
+    return __get('pull_requests')
 
 
 def save_own_pull_request(pull_request_id, pull_request_activity_hash=''):
@@ -55,11 +50,15 @@ def save_own_pull_request(pull_request_id, pull_request_activity_hash=''):
 
 
 def get_own_pull_requests():
-    with open(FILE) as json_file:
-        data = json.load(json_file)
-        return data['own_pull_requests']
+    return __get('own_pull_requests')
 
 
 def __save(data):
     with open(FILE, 'w') as outfile:
         json.dump(data, outfile, indent=4)
+
+
+def __get(field):
+    with open(FILE) as json_file:
+        data = json.load(json_file)
+        return data[field]
