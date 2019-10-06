@@ -12,6 +12,7 @@ import slack.message
 
 def check():
     bitbucket.auth.prepare_token()
+    bitbucket.auth.prepare_account_id()
 
     message_builder = slack.message.PullRequestMessageBuilder()
     message_builder.with_current_date()

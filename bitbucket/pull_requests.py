@@ -11,7 +11,7 @@ def pull_requests_to_review(repository):
     url = 'https://bitbucket.org/api/2.0/repositories/%s/pullrequests' % repository
 
     parameters = {
-        'q': 'state = "OPEN" AND reviewers.nickname = "%s"' % os.getenv('BITBUCKET_USER'),
+        'q': 'state = "OPEN" AND reviewers.account_id = "%s"' % store.get_account_id(),
         'pagelen': 20
     }
 
