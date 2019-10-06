@@ -4,7 +4,7 @@ FILE = 'bitbucket/data.json'
 
 
 def init():
-    data = {'access_token': '', 'pull_requests': {}}
+    data = {'access_token': '', 'pull_requests': {}, 'own_pull_requests': {}}
     __save(data)
 
 
@@ -28,10 +28,23 @@ def save_pull_request(pull_request_id, pull_request_hash):
         __save(data)
 
 
+def save_own_pull_request(pull_request_id, pull_request_activity_hash=''):
+    with open(FILE) as json_file:
+        data = json.load(json_file)
+        data['own_pull_requests'][pull_request_id] = pull_request_activity_hash
+        __save(data)
+
+
 def get_pull_requests():
     with open(FILE) as json_file:
         data = json.load(json_file)
         return data['pull_requests']
+
+
+def get_own_pull_requests():
+    with open(FILE) as json_file:
+        data = json.load(json_file)
+        return data['own_pull_requests']
 
 
 def __save(data):

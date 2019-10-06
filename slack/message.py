@@ -14,6 +14,9 @@ class PullRequestMessageBuilder:
     def with_pull_request(self, title, link):
         self.message += ':white_small_square: <%s|%s>\n' % (link, title)
 
+    def with_own_pull_request(self, title, link):
+        self.message += ':black_small_square: <%s|%s>\n' % (link, title)
+
     def with_new_line(self):
         self.message += '\n'
 
