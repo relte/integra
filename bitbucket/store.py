@@ -1,7 +1,8 @@
 import json
+from os import path
 
 
-FILE = 'bitbucket/data.json'
+FILE = path.join(path.dirname(__file__), 'data.json')
 
 
 def init():
